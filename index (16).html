@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You Are An Idiot / Virus / By Max</title>
+  <style>
+    body {
+      background-color: yellow;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 5rem;
+      color: red;
+      text-shadow: 2px 2px black;
+      animation: bounce 1s infinite alternate;
+    }
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-20px);
+      }
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+  <h1>You Are An Idiot 😂</h1>
+  <button id="stopPrankBtn">Stop</button>
+
+  <script>
+    // Play the sound
+    const audio = new Audio('idiot.mp3'); // Ensure the file is in the same folder
+    audio.loop = true;
+    audio.play();
+
+    // Variable to store whether the prank is active
+    let prankActive = true;
+
+    // Function to move windows randomly with a faster speed
+    function moveWindow(win) {
+      let x = Math.floor(Math.random() * screen.width);
+      let y = Math.floor(Math.random() * screen.height);
+      win.moveTo(x, y);
+    }
+
+    // Function to open a new window and keep it moving fast
+    function openWindow() {
+      const newWindow = window.open('', '', 'width=400,height=300');
+      if (newWindow) {
+        newWindow.document.write(`
+          <h1 style="color: red; font-size: 3rem; text-align: center;">
+            You Are An Idiot 😂 </h1>
+        `);
+
+        // Keep moving the window every 100ms (faster)
+        setInterval(() => moveWindow(newWindow), 250);
+
+        // Create a new window when the user closes one
+        newWindow.onbeforeunload = () => {
+          if (prankActive) openWindow(); // Open a new window if prank is still active
+        };
+      }
+    }
+
+    // Function to stop the prank
+    function stopPrank() {
+      prankActive = false; // Disable further actions
+      audio.pause(); // Stop the sound
+      alert("Prank has been stopped.");
+    }
+
+    // Add event listener to the Stop button
+    document.getElementById('stopPrankBtn').addEventListener('click', stopPrank);
+
+    // Open new windows very fast (every 500ms)
+    setInterval(() => {
+      if (prankActive) openWindow();
+    }, 450);
+  </script>
+</body>
+</html>
